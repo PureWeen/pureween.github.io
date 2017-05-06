@@ -12,8 +12,7 @@ categories: TPL Task Reactive.NET Rx.NET
 How did I get dispatched here?
 "Some Picture"
 
-
-Here's a Select block that's awaiting on a Task. Let's assume on entry it is on the UI Thread.
+ 
 {% highlight csharp  %}
     .SelectMany(async alreadyCompletedTask =>
     {
@@ -31,9 +30,9 @@ Here's a Select block that's awaiting on a Task. Let's assume on entry it is on 
     )
 {% endhighlight %} 
 
-Once execution gets to that next Select block you aren't guarunteed to still be on the UI Thread even though the await puts you back there inside the SelectMany.
+Within the execution frame of the await you'll be safely kept on the dispatcher. But once reactive has processed the Task and scheduled the next block you may or may not still be on the UI Thread.
 
-This is due to how Reactive schedules the continuing block of work. If the task has already completed then it uses the [immediate scheduler][Rx.NET-Immediate]
+If the task has already completed then Reactive uses the [immediate scheduler][Rx.NET-Immediate]
 {% highlight csharp  %}
 private static IObservable<TResult> ToObservableImpl<TResult>(Task<TResult> task, IScheduler scheduler)
 {
@@ -44,8 +43,9 @@ private static IObservable<TResult> ToObservableImpl<TResult>(Task<TResult> task
         scheduler = scheduler ?? ImmediateScheduler.Instance;
 .....
 {% endhighlight %} 
+Meaning the work will just immediately be scheduled on the current thread.
 
-Otherwise a ContinueWith is used at which point we will end up on a thread from the [thread pool][Rx.NET-ThreadPool]
+If the Task still has work to do then the continuation of the stream happens from a ContinueWith which puts us onto a thread from the [thread pool][Rx.NET-ThreadPool].
 
 {% highlight csharp  %}
 private static IObservable<TResult> ToObservableSlow<TResult>(Task<TResult> task, IScheduler scheduler)
@@ -56,14 +56,28 @@ private static IObservable<TResult> ToObservableSlow<TResult>(Task<TResult> task
         }
 {% endhighlight %} 
 
+Point being that even if your TPL block starts and ends on the UI Thread the following reactive sequences will not for sure be on or off of the UI Thread. You will need to deliberately specify the scheduler if you care about where you will end up. This also applies if you want to ensure that you won't be on the UI Thread.
 
-This threw me off at first because the code after the await will be on the UI Thread. So as I'm following the path of execution I just default to thinking my next Reactive block will just be immediately scheduled onto the same thread. This is the thinking that keeps me from writing "ObserveOn" after every single transformation.  Couple this with the implicit promise of await keeping me on the right thread and the end result is a block of code that will end up dispatching differently only when I'm showing it to a client :-/
+{% highlight csharp  %}
+    .SelectMany(async alreadyCompletedTask =>
+    {
 
-Point being that any time you exit a TPL block it's important to always delegate a scheduler otherwise you may see unpredictable behavior. 
+        //Here we will be on the UI Thread
+        await GetSomeTaskThatMayOrMayNotBeCompleted();
+        //Here we will still be on the UI Thread
+        //YAY thank you SynchronizationContext
+        
+        return Unit.Default; 
+    })
+    .ObserveOnDispatcher()
+    .Select(_=> //Now we know we're always on the UI Thread
+    )
+{% endhighlight %} 
 
-I first saw this unpredictability with Xamarin Forms Navigation Pages. On Android the Task from the push/pop navigation would complete in such a way that the following block would continue on the UI Thread whereas on iOS it just crashed horribly. In this case I'm awaiting an operation that's going to happen on the UI Thread so even more so I'm not really thinking that the continued block will leave the UI Thread
+This effect threw me off at first because the code after the await is on the UI Thread. As I'm following the path of execution I default to thinking my next sequence after the TPL block will just be immediately scheduled because that's where it left off. This is the thinking that keeps me from writing "ObserveOn" after every single step in an observable sequence. Couple this with the implicit promise of await keeping me on the thread I departed from and the end result is a block of code that will end up dispatching differently  :-/
 
 
+In the real world I was hit by this with a Xamarin Forms Navigation Page. On Android the Task from the push/pop navigation would complete in such a way that the following sequence would continue on the UI Thread whereas on iOS it just crashed horribly. 
 
 Here's a completish example taken from the [Reproduction WPF App][PureWeen-Repo]
 {% highlight csharp  %}
