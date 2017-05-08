@@ -2,3 +2,18 @@
 ---
 
 @import "{{ site.theme }}";
+
+#header nav li.activePage {
+    color: white;
+    border: 1px solid #5d910b;
+    background: linear_gradient(#93bd20, #659e10);
+    border-radius: 2px;
+    box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.3), 0px 3px 7px rgba(0, 0, 0, 0.7);
+    background-color: purple;
+    padding: 10px 12px;
+    margin-top: 6px;
+    line-height: 14px;
+    font-size: 14px;
+    display: inline-block;
+    text-align: center;
+}

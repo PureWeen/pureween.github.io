@@ -20,16 +20,18 @@
      <div id="header"> 
        <nav>
           <li class="fork">Welcome to Shane</li>  
+          <!-- make better --> 
+  
        {% if page.url == "/" %} 
           <li class="title"><a href="{{ site.baseurl }}{% link about.md %}">About</a></li> 
           <li class="title"><a href="{{ site.baseurl }}{% link archive.md %}">Archive</a></li>           
-          <li class="title">Home</li>  
+          <li class="title activePage">Home</li>  
         {% elsif page.url == "/archive/" %}  
           <li class="title"><a href="{{ site.baseurl }}{% link about.md %}">About</a></li> 
-          <li class="title">Archive</li>           
+          <li class="title activePage">Archive</li>           
           <li class="title"><a href="{{ site.baseurl }}{% link index.md %}">Home</a></li> 
         {% elsif page.url == "/about/" %} 
-          <li class="title">About</li> 
+          <li class="title activePage">About</li> 
           <li class="title"><a href="{{ site.baseurl }}{% link archive.md %}">Archive</a></li>           
           <li class="title"><a href="{{ site.baseurl }}{% link index.md %}">Home</a></li> 
         {% else %} 
