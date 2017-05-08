@@ -1,9 +1,7 @@
-{% assign post = site.posts.first %}
-
-<ul>
-  {% for post in site.posts %}
-    <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
+---
+layout: default
+---
+ 
+  {% assign post = site.posts.first %}
+  {% assign content = post.content %}
+  {% include post_detail.html %} 

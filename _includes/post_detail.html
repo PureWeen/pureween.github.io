@@ -1,0 +1,41 @@
+ 
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+
+  <header class="post-header"> 
+
+    {% if page.title %}
+    <h1 class="post-title" itemprop="name headline">{{ page.title | escape }}</h1>    
+    {% elsif post.title %}
+    <h1 class="post-title" itemprop="name headline">{{ post.title | escape }}</h1>
+    {% endif %}
+
+    <p class="post-meta">
+      {% if page.title %}
+      <time datetime="{{ page.date | date_to_xmlschema }}" itemprop="datePublished">
+        {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
+        {{ page.date | date: date_format }}
+      </time>  
+      {% elsif post.title %}
+      <time datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">
+        {% assign date_format = site.minima.date_format | default: "%b %-d, %Y" %}
+        {{ post.date | date: date_format }}
+      </time>
+      {% endif %}
+
+      
+      {% if post.author %}
+        • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ post.author }}</span></span>
+      {% endif %}
+      </p>
+  </header>
+<hr/>
+  <div class="post-content" itemprop="articleBody"> 
+    {{ content }}
+  </div>
+
+  {% if site.disqus.shortname %}
+    {% include disqus_comments.html %}
+  {% endif %}
+</article>
+
+ 

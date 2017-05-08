@@ -1,7 +1,6 @@
----
-layout: post
+--- 
 title:  "Where will I await to now?"
-date:   2017-04-01 19:58:16 -0600
+date:   2017-05-07 19:58:16 -0600
 categories: TPL Task Reactive.NET Rx.NET
 ---
 
