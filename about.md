@@ -7,6 +7,8 @@ contents:
    links:
     - title: PingARing
       url: https://www.pingaring.com/
+    - title: GitHub
+      url: https://github.com/PureWeen
  - top-level: Where you'll find me
    links:
     - title: ReactiveX Slack
@@ -21,8 +23,6 @@ contents:
       url: https://www.xamarin.com/forms
  - top-level: Social Profiles
    links:
-    - title: GitHub
-      url: https://github.com/PureWeen
     - title: Stackoverflow
       url: http://stackoverflow.com/users/953734/shane-neuville
     - title: LinkedIn
