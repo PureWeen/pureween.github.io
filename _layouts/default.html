@@ -20,27 +20,14 @@
      <div id="header"> 
        <nav>
           <li class="fork">Welcome to Shane</li>  
-          <!-- make better --> 
-  
-       {% if page.url == "/" %} 
-          <li class="title"><a href="{{ site.baseurl }}{% link about.md %}">About</a></li> 
-          <li class="title"><a href="{{ site.baseurl }}{% link archive.md %}">Archive</a></li>           
-          <li class="title activePage">Home</li>  
-        {% elsif page.url == "/archive/" %}  
-          <li class="title"><a href="{{ site.baseurl }}{% link about.md %}">About</a></li> 
-          <li class="title activePage">Archive</li>           
-          <li class="title"><a href="{{ site.baseurl }}{% link index.md %}">Home</a></li> 
-        {% elsif page.url == "/about/" %} 
-          <li class="title activePage">About</li> 
-          <li class="title"><a href="{{ site.baseurl }}{% link archive.md %}">Archive</a></li>           
-          <li class="title"><a href="{{ site.baseurl }}{% link index.md %}">Home</a></li> 
-        {% else %} 
-          <li class="title"><a href="{{ site.baseurl }}{% link about.md %}">About</a></li> 
-          <li class="title"><a href="{{ site.baseurl }}{% link archive.md %}">Archive</a></li>           
-          <li class="title"><a href="{{ site.baseurl }}{% link index.md %}">Home</a></li> 
-        {% endif %}
-        
-
+          <!-- make better -->  
+       {% for item in site.data.content %}
+         {% if page.url == item.url %}         
+          <li class="title activePage">{{ item.title }}</li>  
+         {% else %} 
+          <li class="title"><a href="{{ item.url }}" alt="{{ item.title }}">{{ item.title }}</a></li>
+         {% endif %}
+      {% endfor %} 
         </nav>
       </div><!-- end header -->
     <div class="wrapper">
