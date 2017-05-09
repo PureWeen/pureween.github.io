@@ -29,6 +29,15 @@ contents:
       url: https://www.linkedin.com/in/shane-neuville-3907884/
     - title: Twitter
       url: https://twitter.com/PureWeen
+ - top-level: Additional Life
+   links:
+    - title: Dancing
+      url: https://www.youtube.com/watch?v=_ljgnFxOwb0
+    - title: Building wearables with my wife
+      url: https://www.youtube.com/watch?v=5v3M1gs21RA
+    - title: Alpha Idaho
+      url: http://alphaidaho.org/
+
 ---
  
 {% for section in page.contents%}
