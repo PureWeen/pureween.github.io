@@ -26,7 +26,7 @@ contents:
     - title: Stackoverflow
       url: http://stackoverflow.com/users/953734/shane-neuville
     - title: LinkedIn
-      url: https://www.linkedin.com/in/shane-neuville-3907884/
+      url: www.linkedin.com/in/ShaneNeu
     - title: Twitter
       url: https://twitter.com/PureWeen
  - top-level: Additional Life

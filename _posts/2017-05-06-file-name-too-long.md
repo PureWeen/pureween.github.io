@@ -31,8 +31,8 @@ Or from the command line just use a command line parameter
 /p:IntermediateOutputPath:t
 
 
-This happens from the Xamarin Build task trying to unzip something of like this
+This happens from the Xamarin Build task trying to unzip something like this
 
     obj\Release\__library_projects__\Xamarin.GooglePlayServices.Base\__AndroidLibraryProjects__.zip
 
-Which contains lots of really long xml file names that came from nuget package.
+Which contains lots of really long xml file names that came from nuget packages.
