@@ -7,11 +7,8 @@ categories: Task Rx.NET
 [Link to Code][PureWeen-Repo] 
 
 [Inspiration For Post][ReactiveUI-Issue]
-
-When working with Reactive Extenstions I tend to try and make everything I possibly can an IObservable. A big place where I've ran into trouble with this mentality has been with mixing Tasks into my Observables. Rx is more in line with free threaded work loads so once you start breaking that model you're really not doing yourself any favors.
-
-
-Here's a simple exmaple of a Task mixed into a Reactive stream.
+ 
+A simple example of a Task mixed into a Reactive stream.
  
 ```csharp
 
@@ -31,7 +28,7 @@ Here's a simple exmaple of a Task mixed into a Reactive stream.
 )
 ```
 
-Within the execution frame of the await you'll be safely kept on the dispatcher. But once reactive has processed the Task and scheduled the next block you may or may not still be on the UI Thread.
+The execution frame of the SelectMany before and after the await will reliably stay on the UI Thread. But once reactive has processed the Task and executed the next block you may or may not still be on the UI Thread depending on if Rx needed to schedule a continuation or if it just executed immediately.
 
 If the task has already completed then Reactive uses the [immediate scheduler][Rx.NET-Immediate]
 
@@ -60,7 +57,7 @@ private static IObservable<TResult> ToObservableSlow<TResult>(Task<TResult> task
 
 ```
 
-Point being that even if your TPL block starts and ends on the UI Thread the following reactive sequences will not for sure be on or off of the UI Thread. You will need to deliberately specify the scheduler if you care about where you will end up. This also applies if you want to ensure that you won't be on the UI Thread.
+Point being that even if your Task block starts and ends on the UI Thread the following reactive sequences will not for sure be on the UI Thread. You will need to deliberately specify the scheduler if you care about where you will end up. This also applies if you want to ensure that you won't be on the UI Thread.
 
 ```csharp
 
@@ -79,13 +76,11 @@ Point being that even if your TPL block starts and ends on the UI Thread the fol
 )
 ```
 
-This effect threw me off at first because the code after the await is on the UI Thread. As I'm following the path of execution I default to thinking my next sequence after the Task block will just be immediately scheduled because that's where it left off. This is the thinking that keeps me from writing "ObserveOn" after every single step in an observable sequence. Problem is our async block is going to inconsistently cause scheduling to occur without us really being aware of it and the end result is a block of code that will end up dispatching differently in different cases. 
+This effect threw me off at first because the code after the await is on the UI Thread. As I'm following the path of execution I default to thinking my next sequence after the Task block will just be immediately scheduled. If I haven't explicitly specified a scheduler then it will just execute immediately. This is the thinking that keeps me from writing "ObserveOn" after every single step in an observable sequence. Problem is our async block is going to inconsistently cause scheduling to occur without us really being aware of it and the end result is a block of code that will end up dispatching differently in different cases. 
 
+In the real world I was hit by this with a Xamarin Forms Navigation Page. On Android the Task from the push/pop navigation would complete in such a way that the following Select would continue on the UI Thread whereas on iOS it wouldn't and would just crash horribly. 
 
-In the real world I was hit by this with a Xamarin Forms Navigation Page. On Android the Task from the push/pop navigation would complete in such a way that the following sequence would continue on the UI Thread whereas on iOS it just crashed horribly. 
-
-The main take away from this experience is that it's ok to just let Tasks be Tasks. Especially in cases where you explicitly care about where you are going to be scheduled. Tasks are great for reliably ensuring you end up on your UI Thread. Converting that over to Reactive and then back is just excessive.
-
+It's important to keep in mind the non explicit interactions that can happen when mixing Tasks with IObservables. 
 
 Here's a completish example taken from the [Reproduction WPF App][PureWeen-Repo]
 ```csharp
