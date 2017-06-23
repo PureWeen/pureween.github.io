@@ -4,15 +4,23 @@ date:   2017-05-07 19:58:16 -0600
 categories: Task Rx.NET
 ---
 
+The [sample project][PureWeen-Repo] for this post contains the final result with the final setup.
 
-So you've read the examples, installed the libraries, copied over the samples and now you're ready for some firey messaging magic. 
+
+So you've read the samples, installed the latest and greatest Xamarin Libraries, and integrated the samples perfectly into your own code.
+
+You click compile and you're all ready for some hot firey message magic. When this very concise errror pops up.
 
 ```
 error MSB6006: "java.exe" exited with code 2. // :-(
 ```
 
-Checking the build logs yield nothing of value unless you increae the logging detail (insert pretty link here)
+This usually means you'll need to crank up the build verbosity on Visual Studio.
 
+**Tools -> Options -> Project and Solutions -> Build and Run -> Set build output verbosity to Detailed**
+
+
+Now we get a much more helpful exception
 
 ```
 2>  trouble writing output: Too many field references to fit in one dex file: 68555; max is 65536. (TaskId:349)
@@ -20,28 +28,37 @@ Checking the build logs yield nothing of value unless you increae the logging de
 2>  References by package: (TaskId:349)
 ```
 
-Unfortunately you can hit this limit fairly fast with the latest and greatest Xamarin Support libraries.   The error above came from a brand new project with what I would consider a basic set of 3rd party libraries.
+If you locate the exception in your output you can peruse through it to see what's using up all the references
+```
+2>    2379 android.support.compat
+2>    2379 android.support.coreui
+2>    2379 android.support.coreutils
+2>    2379 android.support.design
+```
+
+
+Unfortunately you can hit this limit fairly fast with the latest and greatest Xamarin Support libraries.   The [sample project][PureWeen-Repo] for this post has the following packages installed.
 
 HockeyApp, Xamarin.FireBase, Xamarin.Forms, Xamarin.Forms.Maps, Azure Messaging
 
+Which I wouldn't take as a gross overuse off 3rd party libraries.
 
-Looking at the list of references used up you can see a large number are straight from support libraries and it doesn't leave much room for your own.
+### MultiDex 
+This solution isn't too hard to get working but it's not the preferred solution. 
 
-Solutions multidex and proguard
+[Remove unused code with ProGuard] [multidex-avoid] 
 
-In this post I'll mainly focus on Proguard as it's the preferred solution before going with multidex.
-https://developer.android.com/studio/build/multidex.html#avoid
+Also for pre-lollipop
+MultiDex has its limitations
+
 https://developer.android.com/studio/build/multidex.html#limitations
 
 
-MultiDex 
-
-This solution isn't too hard to get working. The main issue you'll run into here is when compiling with windows and wanting your app to run on pre-lollipop
+The main issue you'll run into here is when compiling with windows and wanting your app to run on pre-lollipop
 
 http://www.jon-douglas.com/2016/09/05/xamarin-android-multidex/
 
 Once you're able to generate a multidex.keep file you can copy that into your project and modify as needed
-
 
 https://bugzilla.xamarin.com/show_bug.cgi?id=44187
 https://bugzilla.xamarin.com/show_bug.cgi?id=55268
@@ -51,7 +68,7 @@ https://bugzilla.xamarin.com/show_bug.cgi?id=55268
 
 
 
-Proguard
+### Proguard
 In order for ProGuard to run the linker has to be enabled. I've found that I can have to run in Debug will Full linking (Sdk and User assemblines) on in order for it to compile.
 https://developer.xamarin.com/guides/android/deployment,_testing,_and_metrics/proguard/#using
 This bug as well might alleviate most of the pains
@@ -197,3 +214,13 @@ Some general notes
 If you change a multidex or proguard setting clean your solution (maybe even just delete all obj and bin). Otherwise things stick around that don't represent reality
 
 I've found that the firebase token becomes invalid with each build. So even though the internal firebase system still retains the first issued token it becomes invalid on the firebase system so you have to uninstall the app or reset the token
+
+
+
+
+[PureWeen-Repo]: https://github.com/PureWeen/FirebaseSample
+[multidex-avoid]:   https://developer.android.com/studio/build/multidex.html#avoid]
+[StephenCleary-ContinueWith]:   http://blog.stephencleary.com/2013/10/continuewith-is-dangerous-too.html
+[Rx.NET-SourceLink]:   https://github.com/Reactive-Extensions/Rx.NET/blob/master/Rx.NET/Source/System.Reactive.Linq/Reactive/Threading/Tasks/TaskObservableExtensions.cs#L149
+[Rx.NET-Immediate]:https://github.com/Reactive-Extensions/Rx.NET/blob/master/Rx.NET/Source/System.Reactive.Linq/Reactive/Threading/Tasks/TaskObservableExtensions.cs#L155
+[Rx.NET-ThreadPool]:https://github.com/Reactive-Extensions/Rx.NET/blob/master/Rx.NET/Source/System.Reactive.Linq/Reactive/Threading/Tasks/TaskObservableExtensions.cs#L187

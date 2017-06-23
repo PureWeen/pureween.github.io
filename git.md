@@ -17,3 +17,5 @@ git push origin master
 
 Here's a script
 
+##add git ignore
+curl 'https://raw.githubusercontent.com/github/gitignore/master/VisualStudio.gitignore' > .gitignore
