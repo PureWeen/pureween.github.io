@@ -1,6 +1,7 @@
 ---
 title: Path Too Long Exception After Upgrading Google Play Service Xamarin Android
 categories: Xamarin Android msbuild
+comments: true
 ---
 
 

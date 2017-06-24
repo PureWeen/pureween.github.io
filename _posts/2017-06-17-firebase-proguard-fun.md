@@ -2,6 +2,7 @@
 title:  "Fun with Firebase, Too Many References, ProGuard, and MultiDex"
 date:   2017-06-17 00:00:00 -0600
 categories: Firebase ProGuard
+comments: true
 ---
 
 
