@@ -31,6 +31,6 @@
 </article>
 
 
-{% if page.comments  %} 
+{% if page.comments and jekyll.GH_ENV == 'gh_pages'  %} 
   {% include disqus_comments.html %}
 {% endif %} 

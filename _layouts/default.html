@@ -15,6 +15,9 @@
     <![endif]-->
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     {% seo %}
+    {% if jekyll.GH_ENV == 'gh_pages' %}
+    {% include analytics.html %}
+    {% endif %}
   </head>
   <body>  
      <div id="header"> 
