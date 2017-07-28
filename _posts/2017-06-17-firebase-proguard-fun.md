@@ -44,7 +44,7 @@ Unfortunately you can hit this limit fairly fast with the latest and greatest Xa
 * Azure Messaging
 * And very little custom code. Just enough to get Firebase working.
 
-I call this a gross overuse of 3rd party libraries. 
+I wouldn't call this a gross overuse of 3rd party libraries. 
 
 ## Solution 1: MultiDex 
 This solution isn't too hard to get working but it's not the [recommended first solution] [multidex-avoid] and it has some [limitations][multidex-limitations].
