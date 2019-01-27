@@ -29,7 +29,7 @@ comments: true
 
 ### Compiling Issues
 - On windows everything should compile without needing to do anything
-    - if you are getting errors try running *git clean -xdf* sometimes left over files from changing branches can cause issues
+    - if you are getting errors try running *git clean -xdf*. Sometimes left over files from changing branches can cause issues
 - Current issues with multi targeting make VS Mac a bit trickier to work with.
     - Here's a [Gist](https://gist.github.com/PureWeen/92c1e1aff0c257c3decf0bcb8d6e9296) for a script you can use
 
