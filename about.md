@@ -14,7 +14,7 @@ contents:
  - top-level: Projects I enjoy 
    links:
     - title: ReactiveUI
-      url: http://reactiveui.net/
+      url: https://reactiveui.net/
     - title: DynamicData
       url: https://dynamic-data.org/
     - title: Xamarin.Forms
@@ -22,7 +22,7 @@ contents:
  - top-level: Social Profiles
    links:
     - title: Stackoverflow
-      url: http://stackoverflow.com/users/953734/shane-neuville
+      url: https://stackoverflow.com/users/953734/shane-neuville
     - title: LinkedIn
       url: https://www.linkedin.com/in/ShaneNeu
     - title: Twitter
@@ -34,7 +34,7 @@ contents:
     - title: Building wearables with my wife
       url: https://www.youtube.com/watch?v=5v3M1gs21RA
     - title: Alpha Idaho
-      url: http://alphaidaho.org/
+      url: https://alphaidaho.org/
 
 ---
  

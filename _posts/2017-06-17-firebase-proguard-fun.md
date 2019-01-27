@@ -216,7 +216,7 @@ I've found Firebase to be really squirrely overall. If you keep getting unsucces
 [PureWeen-Repo]: https://github.com/PureWeen/FirebaseSample
 [multidex-avoid]: https://developer.android.com/studio/build/multidex.html#avoid
 [multidex-limitations]: https://developer.android.com/studio/build/multidex.html#limitations
-[multidex-douglas]:http://www.jon-douglas.com/2016/09/05/xamarin-android-multidex/
+[multidex-douglas]:https://www.jon-douglas.com/2016/09/05/xamarin-android-multidex/
 [xamarin-bug-references]:https://bugzilla.xamarin.com/show_bug.cgi?id=55117
 [xamarin-proguard]:https://developer.xamarin.com/guides/android/deployment,_testing,_and_metrics/proguard/#using
 [xamarin-proguard-setup]:https://developer.xamarin.com/guides/android/deployment,_testing,_and_metrics/proguard/#customizing
