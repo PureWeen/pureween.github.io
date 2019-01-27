@@ -20,6 +20,7 @@ comments: true
     - Commit Method
         - [Forms Releases](https://github.com/xamarin/Xamarin.Forms/releases) lists the commits associated with each release
         - git checkout 588023e
+- Now you're ready to step into the source code. Run your project and when you try to step into anything or view the call stack it'll let you navigate to the files at *d:/a/1/s*
 
 ### Working on a fix you want to submit?
 - The [Control Gallery](https://github.com/xamarin/Xamarin.Forms/tree/master/Xamarin.Forms.ControlGallery.Android) projects that are part of the main solution are a great place to setup and test your scenarios from.
