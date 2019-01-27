@@ -5,8 +5,6 @@ layout: default
 contents:
  - top-level: Personal Projects
    links:
-    - title: PingARing
-      url: https://www.pingaring.com/
     - title: GitHub
       url: https://github.com/PureWeen
  - top-level: Where you'll find me
