@@ -6,7 +6,7 @@ comments: true
 ---
 
 ### Setting up the source code
-- Life is easiest if you can clone do the d drive
+- Life is easiest if you can clone to the d drive
     - *git clone https://github.com/xamarin/Xamarin.Forms.git d:\a\1\s*
 - If you don't have a D drive then you can use *subst*
     - *git clone https://github.com/xamarin/Xamarin.Forms.git c:\SomeFolder\a\1\s*
