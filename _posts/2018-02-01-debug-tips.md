@@ -14,12 +14,11 @@ comments: true
         - If you get a parameter error message it means the D drive is being used by something else
 - Identify the tag/commit of the nuget package
     - Tag Method
-        - If you go to Xamarin Forms on github you will notice that the Forms tags have a consistent naming scheme
-            - RC is the initial release and SR marks each additional release
-                - For example *release-3.4.0-sr2* applies to *3.4.0.1029999*
+        - If you go to [Xamarin Forms](https://github.com/xamarin/Xamarin.Forms) on GitHub, you will notice that the Forms tags have a consistent naming scheme
+            - RC is the initial release and SR marks each additional release. For example *release-3.4.0-sr2* applies to *3.4.0.1029999*
         - git checkout tags/release-3.4.0-sr2
     - Commit Method
-        - https://github.com/xamarin/Xamarin.Forms/releases lists the commits associated with each release
+        - [Forms Releases](https://github.com/xamarin/Xamarin.Forms/releases) lists the commits associated with each release
         - git checkout 588023e
 
 ### Source Link
