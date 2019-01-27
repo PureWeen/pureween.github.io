@@ -21,7 +21,7 @@ comments: true
     - git checkout tags/release-3.4.0-sr2
 
 ### Source Link
-- Currently the Xamarin Debugger doesn't support SourceLink style debugging. The internal wheels are returning and once that is ready Forms will add SourceLink support
+- Currently the Xamarin Debugger doesn't support SourceLink style debugging. The internal wheels are turning on this and once it is ready Forms will add SourceLink support
 
 ### Build scripts
 - Currently working on build scripts to help with nuget packaging (https://github.com/xamarin/Xamarin.Forms/pull/5074)
