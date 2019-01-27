@@ -25,9 +25,17 @@ comments: true
 - The [Control Gallery](https://github.com/xamarin/Xamarin.Forms/tree/master/Xamarin.Forms.ControlGallery.Android) projects that are part of the main solution are a great place to setup and test your scenarios from.
     - The main page is loaded from the following [CreateDefaultMainPage](https://github.com/xamarin/Xamarin.Forms/blob/78385f9fc1fc56dc88bd98e73bf9c8f2f2d0a90a/Xamarin.Forms.Controls/App.cs#L107) method. 
     - If you submit a fix you'll most likely need to add an issue [here](https://github.com/xamarin/Xamarin.Forms/tree/78385f9fc1fc56dc88bd98e73bf9c8f2f2d0a90a/Xamarin.Forms.Controls.Issues/Xamarin.Forms.Controls.Issues.Shared) which gets loaded into the Control Gallery test runner.
+    - Typically when I'm developing fixes I'll start with loading my test cases inside the [CreateDefaultMainPage](https://github.com/xamarin/Xamarin.Forms/blob/78385f9fc1fc56dc88bd98e73bf9c8f2f2d0a90a/Xamarin.Forms.Controls/App.cs#L107) method and then once I've reproduced and fixed the issue I move it over to an official UI test issue.
+
+### Compiling Issues
+- On windows everything should compile without needing to do anything
+    - if you are getting errors try running *git clean -xdf* sometimes left over files from changing branches can cause issues
+- Current issues with multi targeting make VS Mac a bit trickier to work with.
+    - Here's a [Gist](https://gist.github.com/PureWeen/92c1e1aff0c257c3decf0bcb8d6e9296) for a script you can use
+
 
 ### Source Link
 - Currently the Xamarin Debugger doesn't support SourceLink style debugging. The internal wheels are turning on this and once it is ready Forms will add SourceLink support
 
 ### Build scripts
-- Currently working on build scripts to help with nuget packaging (https://github.com/xamarin/Xamarin.Forms/pull/5074)
+- Currently working on build scripts to help with nuget packaging and different build scenarios (https://github.com/xamarin/Xamarin.Forms/pull/5074)
