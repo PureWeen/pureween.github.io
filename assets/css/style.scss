@@ -17,3 +17,44 @@
     display: inline-block;
     text-align: center;
 }
+
+/* PR List Styles */
+.pr-sections {
+    margin-top: 2em;
+}
+
+.pr-list {
+    list-style: none;
+    padding: 0;
+}
+
+.pr-list li {
+    margin-bottom: 1em;
+    padding: 0.5em;
+    border-left: 3px solid #93bd20;
+    background-color: rgba(147, 189, 32, 0.05);
+}
+
+.pr-list li a {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.25em;
+}
+
+.pr-meta {
+    font-size: 0.85em;
+    color: #666;
+    display: block;
+}
+
+.pr-labels {
+    font-style: italic;
+    color: #93bd20;
+}
+
+.pr-updated {
+    text-align: center;
+    margin-top: 2em;
+    padding-top: 1em;
+    border-top: 1px solid #eee;
+}

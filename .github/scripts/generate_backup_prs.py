@@ -8,6 +8,7 @@ import os
 import sys
 import yaml
 import requests
+import time
 from datetime import datetime
 from typing import List, Dict, Any
 
@@ -21,7 +22,7 @@ def get_github_token() -> str:
 
 
 def make_github_request(url: str, token: str) -> Dict[Any, Any]:
-    """Make authenticated request to GitHub API."""
+    """Make authenticated request to GitHub API with rate limiting."""
     headers = {
         'Authorization': f'token {token}',
         'Accept': 'application/vnd.github.v3+json',
@@ -29,6 +30,17 @@ def make_github_request(url: str, token: str) -> Dict[Any, Any]:
     }
     
     response = requests.get(url, headers=headers)
+    
+    # Basic rate limiting - wait if we're getting close to limits
+    remaining = int(response.headers.get('X-RateLimit-Remaining', '0'))
+    if remaining < 10:
+        reset_time = int(response.headers.get('X-RateLimit-Reset', '0'))
+        current_time = int(time.time())
+        if reset_time > current_time:
+            sleep_time = min(reset_time - current_time + 1, 60)  # Max 60 seconds
+            print(f"Rate limit low ({remaining} remaining), sleeping for {sleep_time} seconds...")
+            time.sleep(sleep_time)
+    
     response.raise_for_status()
     return response.json()
 
@@ -70,6 +82,9 @@ def get_high_value_prs(token: str, repo_owner: str, repo_name: str, limit: int =
         
         return high_value_prs[:limit]
     
+    except requests.exceptions.RequestException as e:
+        print(f"Warning: GitHub API request failed for high value PRs: {e}")
+        return []
     except Exception as e:
         print(f"Warning: Failed to fetch high value PRs: {e}")
         return []
@@ -86,27 +101,38 @@ def get_least_changes_prs(token: str, repo_owner: str, repo_name: str, limit: in
         prs = make_github_request(prs_url, token)
         
         pr_details = []
-        for pr in prs:
-            # Get detailed PR info including file changes
-            pr_detail_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/pulls/{pr['number']}"
-            pr_detail = make_github_request(pr_detail_url, token)
-            
-            pr_details.append({
-                'number': pr_detail['number'],
-                'title': pr_detail['title'],
-                'url': pr_detail['html_url'],
-                'user': pr_detail['user']['login'],
-                'created_at': pr_detail['created_at'],
-                'updated_at': pr_detail['updated_at'],
-                'comments': pr_detail.get('comments', 0),
-                'changed_files': pr_detail.get('changed_files', 0),
-                'labels': [label['name'] for label in pr_detail.get('labels', [])]
-            })
+        for i, pr in enumerate(prs):
+            try:
+                # Small delay between requests to be respectful
+                if i > 0:
+                    time.sleep(0.1)
+                    
+                # Get detailed PR info including file changes
+                pr_detail_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/pulls/{pr['number']}"
+                pr_detail = make_github_request(pr_detail_url, token)
+                
+                pr_details.append({
+                    'number': pr_detail['number'],
+                    'title': pr_detail['title'],
+                    'url': pr_detail['html_url'],
+                    'user': pr_detail['user']['login'],
+                    'created_at': pr_detail['created_at'],
+                    'updated_at': pr_detail['updated_at'],
+                    'comments': pr_detail.get('comments', 0),
+                    'changed_files': pr_detail.get('changed_files', 0),
+                    'labels': [label['name'] for label in pr_detail.get('labels', [])]
+                })
+            except requests.exceptions.RequestException as e:
+                print(f"Warning: Failed to fetch details for PR #{pr['number']}: {e}")
+                continue
         
         # Sort by fewest changed files
         pr_details.sort(key=lambda x: x['changed_files'])
         return pr_details[:limit]
     
+    except requests.exceptions.RequestException as e:
+        print(f"Warning: GitHub API request failed for least changes PRs: {e}")
+        return []
     except Exception as e:
         print(f"Warning: Failed to fetch least changes PRs: {e}")
         return []
