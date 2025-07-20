@@ -1,3 +1,6 @@
+# GitHub Actions workflow to generate backup PR lists for Jekyll site
+# Fetches high-value PRs and PRs with minimal changes from a specified repository
+# Runs daily at 6 AM UTC and can be triggered manually
 name: Generate Backup PRs
 
 on:
