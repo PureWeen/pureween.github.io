@@ -1,0 +1,63 @@
+name: Generate Backup PRs
+
+on:
+  schedule:
+    # Run daily at 6 AM UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+    inputs:
+      repo_owner:
+        description: 'Repository owner (default: microsoft)'
+        required: false
+        default: 'microsoft'
+      repo_name:
+        description: 'Repository name (default: maui)'
+        required: false
+        default: 'maui'
+
+jobs:
+  generate-backup-prs:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install requests pyyaml
+    
+    - name: Generate backup PR data
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REPO_OWNER: ${{ github.event.inputs.repo_owner || 'microsoft' }}
+        REPO_NAME: ${{ github.event.inputs.repo_name || 'maui' }}
+        OUTPUT_PATH: '_data/backup_prs.yaml'
+      run: |
+        python .github/scripts/generate_backup_prs.py
+    
+    - name: Check for changes
+      id: check_changes
+      run: |
+        if git diff --quiet _data/backup_prs.yaml; then
+          echo "changed=false" >> $GITHUB_OUTPUT
+        else
+          echo "changed=true" >> $GITHUB_OUTPUT
+        fi
+    
+    - name: Commit and push changes
+      if: steps.check_changes.outputs.changed == 'true'
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add _data/backup_prs.yaml
+        git commit -m "Update backup PR data - $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+        git push

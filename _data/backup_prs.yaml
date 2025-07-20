@@ -1,0 +1,38 @@
+generated_at: '2024-01-15T06:00:00Z'
+repository: microsoft/maui
+high_value_prs:
+  - number: 12345
+    title: "Critical bug fix for rendering issue"
+    url: "https://github.com/microsoft/maui/pull/12345"
+    user: "contributor1"
+    created_at: "2024-01-10T10:00:00Z"
+    updated_at: "2024-01-14T15:30:00Z"
+    comments: 15
+    labels: ["critical", "bug"]
+  - number: 12346
+    title: "Performance improvement for ListView"
+    url: "https://github.com/microsoft/maui/pull/12346"
+    user: "contributor2"
+    created_at: "2024-01-12T14:00:00Z"
+    updated_at: "2024-01-14T16:45:00Z"
+    comments: 12
+    labels: ["enhancement", "performance"]
+least_changes_prs:
+  - number: 12350
+    title: "Fix typo in documentation"
+    url: "https://github.com/microsoft/maui/pull/12350"
+    user: "contributor3"
+    created_at: "2024-01-13T09:00:00Z"
+    updated_at: "2024-01-13T09:15:00Z"
+    comments: 2
+    changed_files: 1
+    labels: ["documentation"]
+  - number: 12351
+    title: "Update package version"
+    url: "https://github.com/microsoft/maui/pull/12351"
+    user: "contributor4"
+    created_at: "2024-01-14T11:00:00Z"
+    updated_at: "2024-01-14T11:30:00Z"
+    comments: 1
+    changed_files: 2
+    labels: ["dependencies"]

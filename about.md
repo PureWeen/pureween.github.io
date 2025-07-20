@@ -43,4 +43,54 @@ contents:
     {% for link in section.links %}  
 *   <a class="" href="{{ link.url }}" alt="{{ link.title }}">{{ link.title }}</a>
     {% endfor %}
-{% endfor %} 
+{% endfor %}
+
+---
+
+## Open Source Activity
+
+{% if site.data.backup_prs %}
+<div class="pr-sections">
+  {% if site.data.backup_prs.high_value_prs and site.data.backup_prs.high_value_prs.size > 0 %}
+  ### High Value Pull Requests
+  <p>Notable PRs with critical labels or significant community engagement:</p>
+  <ul class="pr-list">
+    {% for pr in site.data.backup_prs.high_value_prs limit:10 %}
+    <li>
+      <a href="{{ pr.url }}" target="_blank" rel="noopener">{{ pr.title }}</a>
+      <span class="pr-meta">
+        by {{ pr.user }} • {{ pr.comments }} comments
+        {% if pr.labels and pr.labels.size > 0 %}
+        • <span class="pr-labels">{{ pr.labels | join: ", " }}</span>
+        {% endif %}
+      </span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if site.data.backup_prs.least_changes_prs and site.data.backup_prs.least_changes_prs.size > 0 %}
+  ### Simple Pull Requests
+  <p>Focused PRs with minimal file changes:</p>
+  <ul class="pr-list">
+    {% for pr in site.data.backup_prs.least_changes_prs limit:10 %}
+    <li>
+      <a href="{{ pr.url }}" target="_blank" rel="noopener">{{ pr.title }}</a>
+      <span class="pr-meta">
+        by {{ pr.user }} • {{ pr.changed_files }} files changed
+        {% if pr.labels and pr.labels.size > 0 %}
+        • <span class="pr-labels">{{ pr.labels | join: ", " }}</span>
+        {% endif %}
+      </span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if site.data.backup_prs.generated_at %}
+  <p class="pr-updated"><small>Last updated: {{ site.data.backup_prs.generated_at | date: "%B %d, %Y at %H:%M UTC" }}</small></p>
+  {% endif %}
+</div>
+{% else %}
+<p><em>PR data not available yet. Check back soon!</em></p>
+{% endif %} 
