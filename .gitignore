@@ -3,3 +3,8 @@ _site
 .jekyll-metadata
 .vs/**/*
 .DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
